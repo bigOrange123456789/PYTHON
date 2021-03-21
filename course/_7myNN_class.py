@@ -1,6 +1,9 @@
 from numpy import *
 import math
 
+#0.定义工具函数
+
+
 #1.定义xtw
 x=mat([0.6,0.9])
 w=mat(ones((2,3)))
@@ -11,7 +14,8 @@ y=x*w
 
 #3.通过softmax函数处理y
 def softmax(a):#x是一个矩阵
-    b=mat(ones(shape(a)))
+    b=copy(a)
+    b=b-b.max()
     for i in range(shape(a)[0]):
         for j in range(shape(a)[1]):
             b[i,j]=math.exp(a[i,j]) # 遍历矩阵
@@ -46,12 +50,6 @@ def f(w0):#x和t是已知的
 #f(w)
 
 #6.求损失函数关于w的梯度
-def copy(a):
-    b = mat(ones(shape(a)))
-    for i in range(shape(a)[0]):
-        for j in range(shape(a)[1]):
-            b[i, j]=a[i, j]
-    return b
 def computeGrad(f,w):
     h=1e-4
     grad=mat(ones(shape(w)))
@@ -65,7 +63,7 @@ def computeGrad(f,w):
 #grad=computeGrad(f,w)
 
 #7.使用梯度下降的方法计算w
-def gradient_descent(f,init_w,lr=0.01,step_num=2):
+def gradient_descent(f,init_w,lr=0.01,step_num=5):
     W0=init_w
     for i in range(step_num):
         g = computeGrad(f, W0)
@@ -74,7 +72,7 @@ def gradient_descent(f,init_w,lr=0.01,step_num=2):
 W=gradient_descent(f,w)
 
 
-
+print(x*W)
 
 class simpleNet:
     def _init_(self):
@@ -86,8 +84,6 @@ class simpleNet:
 
 
 
-net=simpleNet()
-print(net.w)
 
 
 
