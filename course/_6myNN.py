@@ -11,7 +11,8 @@ y=x*w
 
 #3.通过softmax函数处理y
 def softmax(a):#x是一个矩阵
-    b=mat(ones(shape(a)))
+    a=a-a.max();
+    b=a.copy();
     for i in range(shape(a)[0]):
         for j in range(shape(a)[1]):
             b[i,j]=math.exp(a[i,j]) # 遍历矩阵
@@ -65,11 +66,12 @@ def computeGrad(f,w):
 #grad=computeGrad(f,w)
 
 #7.使用梯度下降的方法计算w
-def gradient_descent(f,init_w,lr=0.01,step_num=2):
+def gradient_descent(f,init_w,lr=1000,step_num=1000):
     W0=init_w
     for i in range(step_num):
         g = computeGrad(f, W0)
         W0 = W0 - g * lr
     return W0
+
 W=gradient_descent(f,w)
-print(x*W)
+print(softmax(x*W))
