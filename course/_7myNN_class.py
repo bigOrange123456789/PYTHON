@@ -74,11 +74,7 @@ W=gradient_descent(f,w)
 
 print(x*W)
 
-class simpleNet:
-    def _init_(self):
-        self.x=mat([0.6,0.9])
-        self.w=mat(ones((2,3)))
-        self.t=mat([0,0,1])
+
         
         
 
