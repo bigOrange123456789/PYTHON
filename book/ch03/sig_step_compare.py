@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pylab as plt
 
-
+#作为激活函数的阶跃函数和sigmoid函数的比较
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))    
 

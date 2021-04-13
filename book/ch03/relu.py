@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pylab as plt
 
-
+#第三种激活函数：ReLU（Rectified Linear Unit）函数
 def relu(x):
     return np.maximum(0, x)
 

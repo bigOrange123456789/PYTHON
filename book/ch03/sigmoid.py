@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pylab as plt
 
-
+#sigmoid函数的实现 用来模拟跳跃函数
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))    
 
