@@ -1,0 +1,27 @@
+<h1>
+cv2 包的使用
+<h2>
+import cv2   #导入数据包
+
+image = cv2.imread(url)#读取数据
+cv2.imshow(name,image)#显示图片
+
+cv2是OpenCV的依赖库
+OpenCV是的跨平台计算机视觉和机器学习软件库
+</h2>
+<h2>
+cv2.waitKey(0)
+
+首先waitKey（）的默认值为0，
+即不写参数时默认值为0，代表无限等待。
+当写参数时，例如waitKey（5），意思是等待5ms。
+另外当等待时间内无任何操作时等待结束后返回-1，
+当等待时间内有输入字符时，则返回字符的阿斯克码值。
+waitKey()通常用在imshow（）后面给予其足够的时间去显示图像。
+</h2>
+<h2>
+import time  #导入时间依赖包
+
+time.time()#获取当前时间
+</h2>
+</h1>
