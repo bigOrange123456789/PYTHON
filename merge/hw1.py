@@ -159,8 +159,8 @@ class Stitcher:
 if __name__ == '__main__': 
 # load the two images and resize them to have a width of 400 pixels
 # (for faster processing)
-    imageA = cv2.imread('1.png')
-    imageB = cv2.imread('2.png')
+    imageA = cv2.imread('../1.png')
+    imageB = cv2.imread('../2.png')
     #cv2.imshow('cat',imageB)
     cv2.waitKey(0)
 #imageA = imutils.resize(imageA, width=400)

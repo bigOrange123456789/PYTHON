@@ -21,3 +21,10 @@ for i in range(len(image)):
                 image[i,j,k]=image[i,j,k]*2;
             
 cv2.imshow('cat',image)
+
+
+
+
+from  matplotlib import pyplot as plt
+plt.imshow(image,cmap='gray', vmin=0, vmax=255)
+

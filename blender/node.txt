@@ -1,0 +1,56 @@
+type
+name
+
+location
+scale
+rotation_euler
+
+------------------------------------------------------------
+import bpy
+
+#scene
+bpy.ops.mesh
+
+bpy.data.objects['Camera']  #访问名为`Camera`的摄像机对象
+bpy.data.objects[1]  #访问列表中的第一个对象
+----------------------------------------------------------
+
+context（正文）是blender数据管理中的一个全局变量集合
+
+bpy.context.selected_objects #访问选择上的对象列表，明显看出可以同时选择多个对象
+bpy.context.active_object #访问目前激活的对象，
+-----------------------------------
+data
+
+bpy.data.objects  #访问场景内普通对象列表，包括lamp、camera以及mesh模型的
+bpy.data.scenes  #访问场景列表
+bpy.data.materials  #访问材质对象列表
+
+bpy.data.objects['Camera']  #访问名为`Camera`的摄像机对象
+bpy.data.objects[1]  #访问列表中的第一个对象
+
+bpy.data.objects['Camera'].name #访问对象名称
+bpy.data.objects['Camera'].location #访问对象的位置
+
+
+----------------------------------------------------------
+----------------------------------------------------------
+
+mathutils
+
+import mathutils
+blue_color = mathutils.Color((0.0, 0.0, 1.0))   #新建一个颜色实例（蓝色）
+mathutils.geometry.box_fit_2d(points)   #工具方法直接调用，求多个点的边界矩形框
+
+----------------------------------------------------------
+----------------------------------------------------------
+bgl
+#This module wraps OpenGL constants and functions, making them available from within Blender Python.
+
+
+
+
+
+
+
+

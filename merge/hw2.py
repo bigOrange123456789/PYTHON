@@ -1,7 +1,6 @@
 import numpy as np
 import imutils
 import cv2  
-import time
 
 class Stitcher:#缝合器
     def __init__(self):
@@ -56,6 +55,7 @@ class Stitcher:#缝合器
             # detect and extract features from the image
         descriptor =cv2.SIFT_create()
         (kps, features) = descriptor.detectAndCompute(image, None)
+        print(features)
 
         
         kps = np.float32([kp.pt for kp in kps])
@@ -119,11 +119,10 @@ class Stitcher:#缝合器
 
  
 if __name__ == '__main__': 
-    imageA = cv2.imread('1.png')
-    imageB = cv2.imread('2.png')
+    imageA = cv2.imread('../1.png')
+    imageB = cv2.imread('../2.png')
     
-    print(imageA)
     
     (result, vis) = Stitcher().stitch([imageA, imageB], showMatches=True)
     
-    cv2.imshow('cat',result)
+    cv2.imshow('cat',vis)
