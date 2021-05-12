@@ -1,18 +1,26 @@
-type
-name
-
-location
-scale
-rotation_euler
-
+type、name
+location、scale、rotation_euler
 ------------------------------------------------------------
 import bpy
+#移除
+bpy.data.objects.remove(object)
+bpy.ops.object.delete()
+#插入
+bpy.ops.mesh.primitive_monkey_add()
+#获取对象
+bpy.data.objects[1]
+bpy.context.scene.objects[1]
+#合并
+bpy.ops.object.select_all(action='DESELECT')#取消选择
+bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
+bpy.ops.object.join()#合并
+#分裂
+bpy.ops.mesh.separate(type="SELECTED")
+#精简对象
+obj.modifiers.new("dec", type = "DECIMATE")
+obj.modifiers[attrName].ratio = r
+bpy.ops.object.mode_set(mode='OBJECT')#进入物体模式才能看到简化结果
 
-#scene
-bpy.ops.mesh
-
-bpy.data.objects['Camera']  #访问名为`Camera`的摄像机对象
-bpy.data.objects[1]  #访问列表中的第一个对象
 ----------------------------------------------------------
 
 context（正文）是blender数据管理中的一个全局变量集合
