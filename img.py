@@ -6,3 +6,11 @@ if __name__ == '__main__':
     cv2.imshow("1.jpg",image)#显示图片
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    def t(l = 1):
+        print(l)
+    t()
+    
+    
+def t(l = 1):
+        print(l)
+t(2)
