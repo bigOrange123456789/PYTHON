@@ -1,0 +1,38 @@
+{"bpy": {
+    "1.data": {
+      "objects": {
+        "remove": "remove(object)",
+        "note": "右侧列表中的对象，一个数组。objects[1]"
+      },
+      "scenes": "场景列表"
+    },
+    "2.ops": {
+      "object": {
+        "delete":"delete() 删除选中的对象",
+        "select_all": "SELECT 全选,DESELECT 取消选中",
+        "select_by_type": "按照类型选中",
+        "select_random": "随机选中一些对象",
+        "join": "合并",
+        "separate": "分裂",
+        "duplicate":"复制",
+        "mode_set": "设置操作模式"
+      },
+      "mesh": {
+        "primitive_monkey_add": "在场景中添加一个猴头"
+      }
+    },
+    "3.context": {
+      "scene": {
+        "objects": {
+          "node": "一个数组"
+        }
+      }
+    },
+    "4.types":{
+      "ObjectBase": {
+
+      }
+    }
+  },
+  "mesh": "type name location scale rotation_euler"
+}

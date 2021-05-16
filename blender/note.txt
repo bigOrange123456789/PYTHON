@@ -1,3 +1,5 @@
+https://docs.blender.org/api/current/
+
 type、name
 location、scale、rotation_euler
 ------------------------------------------------------------
@@ -59,7 +61,10 @@ bgl
 #This module wraps OpenGL constants and functions, making them available from within Blender Python.
 
 
-
+----------------------------------------------------------
+----------------------------------------------------------
+面板：
+ID 标签 空间类型 区域类型 上下文
 
 
 
