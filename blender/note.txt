@@ -16,6 +16,7 @@ bpy.context.scene.objects[1]
 bpy.ops.object.select_all(action='DESELECT')#取消选择
 bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
 bpy.ops.object.join()#合并
+bpy.ops.object.duplicate()#复制
 #分裂
 bpy.ops.mesh.separate(type="SELECTED")#可以先'MATERIAL',后 'LOOSE'
 #精简对象
