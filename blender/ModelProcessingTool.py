@@ -2,7 +2,8 @@ import bpy
 
 class ModelProcessingTool:
     def __init__(self):
-        self.start()
+        #self.start()
+        self.load("E:\\myModel3D\\2","gltf")
         print("finished!")
 
     def __getObj():
@@ -48,5 +49,34 @@ class ModelProcessingTool:
     def download(self,url):
         bpy.ops.export_scene.gltf(filepath=url, export_format="GLB", export_tangents=False,
                              export_image_format="JPEG", export_cameras=False, export_lights=False)
+
+    def load(self,path,type):
+        filters = [] # 过滤的fbx文件
+        need_file_items = []
+        need_file_names = []
+
+        filterDict = {}
+        for item in filters:
+            filterDict[item] = True;
+
+        import os
+        file_lst = os.listdir(path)#获取文件目录
+
+        for item in file_lst:
+            fileName, fileExtension = os.path.splitext(item)#将文件名和后缀名分离
+            if fileExtension == ("."+type) and (not item in filterDict):
+                need_file_items.append(item)
+                need_file_names.append(fileName)
+
+        n = len(need_file_items)
+        for i in range(n):
+            item = need_file_items[i]
+            itemName = need_file_names[i]
+            ufilename = path + "\\" + item
+            
+            if type=="fbx":
+                bpy.ops.import_scene.fbx(filepath=ufilename, directory=path,filter_glob=("*."+type))
+            
+            
 
 ModelProcessingTool()
