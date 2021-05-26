@@ -16,11 +16,12 @@ class ModelProcessingTool:
         self.separate('MATERIAL')
         self.reName()
         self.separate('LOOSE')
-        self.download("E:\\myFile\\test\\test")
+        #self.download("E:\\myFile\\test\\test")
 
     def merge(self):
         bpy.ops.object.select_all(action='DESELECT')#取消选择
         bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
+        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
         bpy.ops.object.join()#合并
 
     def simplification_all(self):
