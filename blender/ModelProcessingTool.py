@@ -23,6 +23,10 @@ class ModelProcessingTool:
         bpy.ops.object.select_all(action='SELECT')
         bpy.ops.object.delete(use_global=False)
         
+    def delete_parent(self):
+        bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
+        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
+
     def merge(self):
         bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')#取消选择
