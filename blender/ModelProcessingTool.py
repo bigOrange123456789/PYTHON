@@ -9,29 +9,38 @@ class ModelProcessingTool:
         return bpy.data.objects;
         
     def start(self):
-        self.delete_all()#删除场景中的全部对象
-        self.load_all("E:\\myModel3D\\2")
+        '''
+        #self.delete_all()#删除场景中的全部对象
+        #self.load_all("E:\\myModel3D\\2")
+        self.delete_noMesh()#删除非mesh对象
         self.merge()
-        self.simplification_all(0.8)#输入网格的压缩比
+        self.simplification_all(0.5)#输入网格的压缩比
         self.separate('MATERIAL')
         self.reName()
         self.separate('LOOSE')
-        self.delete_noMesh()#删除非mesh对象
         #self.download("E:\\myFile\\test\\test")
+        '''
+        self.process()
         
+    def process(self):
+        self.delete_all()#删除场景中的全部对象
+        self.load_fbx("E:\\myModel3D\\fbx","602E.fbx")
+        self.delete_noMesh()#删除非mesh对象
+        self.merge()
+        self.simplification_all(0.5)#输入网格的压缩比
+        self.separate('MATERIAL')
+        self.reName()
+        self.separate('LOOSE')
+        self.download("E:\\myModel3D\\result\\","glb")
+
     def delete_all(self):
         bpy.ops.object.select_all(action='SELECT')
         bpy.ops.object.delete(use_global=False)
-        
-    def delete_parent(self):
-        bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
-        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
+        #bpy.ops.object.delete()
 
     def merge(self):
-        bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')#取消选择
         bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
-        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
         bpy.ops.object.join()#合并
 
     def simplification_all(self,r):
@@ -57,20 +66,39 @@ class ModelProcessingTool:
                 i.name ="mesh"+str(k0);# "改名网格物体"+i.name
                 k0=k0+1;
 
+    def delete_parent(self):
+        bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
+        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
+
     def delete_noMesh(self):#只保留mesh类型的对象
+        self.delete_parent()
         bpy.ops.object.select_all(action='DESELECT')#取消选择
         for i in bpy.context.selectable_objects:
             if not i.type == 'MESH':
                 i.select_set(True)
         bpy.ops.object.delete()
 
-    def download(self,url):
-        bpy.ops.export_scene.gltf(filepath=url, export_format="GLB", export_tangents=False,
-                             export_image_format="JPEG", export_cameras=False, export_lights=False)
-
+    def download(self,path,type):#https://blog.csdn.net/boy_love_sky/article/details/107697343
+        import re
+        import os
+        bpy.ops.object.select_by_type(extend=False, type='MESH')#只选中MESH
+        ls = bpy.context.selected_objects#获取选中的模型
+        for i in ls:
+            bpy.ops.object.select_all(action='DESELECT')#取消之前的选中
+            tpath = path + i.name + "."+type
+            bpy.ops.object.select_pattern(pattern = i.name)#根据模型名字选中模型
+            if type=="fbx":#导出模型
+                bpy.ops.export_scene.fbx(filepath=tpath, use_selection=True)
+            if type=="glb":
+                bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
+            
+        
+    def load_fbx(self,path,filename):
+        bpy.ops.import_scene.fbx(filepath=(path+"\\"+filename), directory=path,filter_glob=("*.fbx"))
+        
     def load_all(self,path):
         self.load(path,"gltf")
-        self.load(path,"obj")
+        self.load(path,"fbx")
     def load(self,path,type):
         filters = [] # 过滤的fbx文件
         need_file_items = []
