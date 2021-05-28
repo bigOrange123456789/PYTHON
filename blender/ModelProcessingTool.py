@@ -98,6 +98,7 @@ class ModelProcessingTool:
         
     def load_all(self,path):
         self.load(path,"gltf")
+        self.load(path,"glb")
         self.load(path,"fbx")
     def load(self,path,type):
         filters = [] # 过滤的fbx文件
@@ -127,6 +128,8 @@ class ModelProcessingTool:
                 bpy.ops.import_scene.fbx(filepath=ufilename, directory=path,filter_glob=("*."+type))
             if type=="gltf":
                 bpy.ops.import_scene.gltf(filepath=ufilename, filter_glob='*.glb;*.gltf')
-                
+            if type=="glb":
+                bpy.ops.import_scene.gltf(filepath=ufilename, filter_glob='*.glb;*.gltf')
+             
             
 ModelProcessingTool()
