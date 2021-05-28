@@ -77,10 +77,22 @@ class ModelProcessingTool:
             if not i.type == 'MESH':
                 i.select_set(True)
         bpy.ops.object.delete()
+        for i in bpy.data.objects:#激活剩下的对象
+            bpy.context.view_layer.objects.active=i;
 
     def download(self,path,type):#https://blog.csdn.net/boy_love_sky/article/details/107697343
         import re
         import os
+        for i in bpy.data.objects:
+            if i.type=="MESH":
+                bpy.ops.object.select_all(action='DESELECT')#取消之前的选中
+                tpath = path + i.name + "."+type
+                bpy.ops.object.select_pattern(pattern = i.name)#根据模型名字选中模型
+                if type=="fbx":#导出模型
+                    bpy.ops.export_scene.fbx(filepath=tpath, use_selection=True)
+                if type=="glb":
+                    bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
+        '''
         bpy.ops.object.select_by_type(extend=False, type='MESH')#只选中MESH
         ls = bpy.context.selected_objects#获取选中的模型
         for i in ls:
@@ -91,6 +103,7 @@ class ModelProcessingTool:
                 bpy.ops.export_scene.fbx(filepath=tpath, use_selection=True)
             if type=="glb":
                 bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
+        '''
             
         
     def load_fbx(self,path,filename):
