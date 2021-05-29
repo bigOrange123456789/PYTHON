@@ -68,7 +68,7 @@ class ModelProcessingTool:
 
     def delete_parent(self):
         bpy.ops.object.select_by_type(type='MESH')#选中所有mesh对象
-        bpy.ops.object.parent_clear(type='CLEAR')#清空所有mesh的父级关系
+        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')#(type='CLEAR')#清空所有mesh的父级关系
 
     def delete_noMesh(self):#只保留mesh类型的对象
         self.delete_parent()
