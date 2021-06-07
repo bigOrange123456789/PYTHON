@@ -38,7 +38,7 @@ def pca(dataMat, topNfeat):    #topNfeat 降维后的维度
     normalization= meanRemoved * redEigVects
     return redEigVects,meanVals,normalization
 
-def getMatrix(obj1,obj2):
+def f(obj1,obj2):
     m1,mean1,normal1 =pca(obj1,topNfeat=3)#obj0=(obj1-mean)*mat*mat' 
     print("归一化结果\n",normal1)#降维后的数据#归一化分布，但不归一化次序
     m2,mean2,normal2 =pca(obj2,topNfeat=3)#obj0=obj2*mat'+mean2
@@ -46,19 +46,11 @@ def getMatrix(obj1,obj2):
     m=m1*m2.I
     obj=(obj1-mean1)*m+mean2
     print("结果验证：\n",obj)
-    
-    m=m.T
-    m=add_row(m,[0,0,0])
-    test=array(mean2-mean1)
-    test=test.tolist()+[0]
-    m=add_col(m,test)
-    return m
 
 
 obj1=[[0,0,0],[2,0,0],[2,1,0]];
 obj2=[[0,0,1],[2,0,1],[2,1,1]];
 obj3=[[0,0,0],[0,2,0],[-1,2,0]];
 
-m=getMatrix(obj1,obj3)
-print("仿射变换矩阵为：\n",m)
+f(obj1,obj2)
 
