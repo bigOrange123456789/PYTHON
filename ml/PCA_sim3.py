@@ -1,11 +1,12 @@
 from numpy import *
-#import numpy as np
+def add_row(mat,arr):
+    mat=mat.tolist();
+    return array(mat+[arr])
 def add_col(mat,arr):
+    #print("mat.T",mat.T)
     mat=(mat.T).tolist();
     return array(mat+[arr]).T
-def add_row(mat,arr):
-    return array(mat+[arr])
-def pca(dataMat, topNfeat=9999999):    #topNfeat 降维后的维度
+def pca(dataMat, topNfeat):    #topNfeat 降维后的维度
     #去均值，将样本数据的中心点移到坐标原点
     meanVals = mean(dataMat, axis=0)#按列求均值，即每一列求一个均值，不同的列代表不同的特征 
     meanRemoved = dataMat - meanVals#  
@@ -48,8 +49,9 @@ def getMatrix(obj1,obj2):
     
     m=m.T
     m=add_row(m,[0,0,0])
-    #m=add_col(m,(mean2-mean1)+0)
-    #print(np.row_stack(m.T,[0,0,0]),(mean2-mean1).T)
+    test=array(mean2-mean1)
+    test=test.tolist()+[0]
+    m=add_col(m,test)
     return m
 
 #obj1=[[0,0,0],[1,0,0],[2.5,0,0],[3,0,0]];
@@ -57,14 +59,5 @@ def getMatrix(obj1,obj2):
 obj1=[[0,0,0],[2,0,0],[2,1,0]];
 obj2=[[0,0,0],[0,2,0],[-1,2,0]];
 m=getMatrix(obj1,obj2)
-print(m)
+print("obj1到obj2的仿射变换矩阵为：\n",m)
 
-'''
-print([[1,2],[3,4]]+[[0,0]])
-
-arr=[[1,2],[3,4]];
-arr=add_row(arr,[0,0])
-arr=add_col(arr,[0,0,0])
-print(arr)
-'''
-#print(arr.tolist()+[0,0,0])
