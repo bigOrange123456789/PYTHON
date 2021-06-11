@@ -1,6 +1,6 @@
 from numpy import *
 def add_row(mat,arr):
-    mat=mat.tolist();
+    #mat=mat.tolist();
     return array(mat+[arr])
 def add_col(mat,arr):
     #print("mat.T",mat.T)
@@ -44,21 +44,27 @@ def getMatrix(obj1,obj2):
     m2,mean2,normal2 =pca(obj2,topNfeat=3)#obj0=obj2*mat'+mean2
     print("归一化结果\n",normal2)#降维后的数据#归一化分布，但不归一化次序
     m=m1*m2.I
-    obj=(obj1-mean1)*m+mean2
+    y=mean2-dot(mean1,m)
+    print("m0:",m)
+    obj=obj1*m+y #obj=(obj1-mean1)*m+mean2
     print("结果验证：\n",obj)
     
-    m=m.T
-    m=add_row(m,[0,0,0])
-    test=array(mean2-mean1)
-    test=test.tolist()+[0]
-    m=add_col(m,test)
+    m=array(m.tolist()+y.tolist())
+    m=array(m.T.tolist()+[[0,0,0,1]]).T
+    
     return m
 
-
 obj1=[[0,0,0],[2,0,0],[2,1,0]];
-obj2=[[0,0,1],[2,0,1],[2,1,1]];
+obj2=[[0,10,1],[2,10,1],[2,11,1]];
 obj3=[[0,0,0],[0,2,0],[-1,2,0]];
 
-m=getMatrix(obj1,obj3)
+m=getMatrix(obj1,obj2)
 print("仿射变换矩阵为：\n",m)
+
+for i in obj1:
+    i=array(i+[1])
+    #i=m*i
+    i=dot(i,m)
+    #i=array(m)*array(i)
+    print(i)
 

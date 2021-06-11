@@ -41,15 +41,11 @@ def getMatrix(obj1,obj2):
     m=m1*m2.I
     center1=obj1["center"]
     center2=obj2["center"]
-    y=mean2-dot(mean1,m)#+array(center2)-array(center1)
-    
-    obj=obj1["arr"]*m+y #obj=(obj1-mean1)*m+mean2
-    print("结果验证：\n",obj)
-    
+    y=mean2-dot(mean1,m)+array(center2)-array(center1)
     
     m=array(m.tolist()+y.tolist())
     m=array(m.T.tolist()+[[0,0,0,1]]).T
-    
+    print("仿射变换矩阵为：\n",m)    
     return m
 def read(url):
     with open(url, 'r') as f:
@@ -62,17 +58,9 @@ def save(mat,name):
             arr.append(j)
     with open(name, 'w') as f:
         json.dump({"m":arr},f)
-def test(obj1,m):
-    for i in obj1:
-        i=array(i+[1])
-        i=dot(i,m)
-        print(i)
+
 
 obj1=read("mesh00.json");#[[0,0,0],[2,0,0],[2,1,0]];
 obj2=read("mesh01.json");#[[0,10,1],[2,10,1],[2,11,1]];
-obj3=read("mesh3.json");#[[0,0,0],[0,2,0],[-1,2,0]];
-
 m=getMatrix(obj1,obj2)
-print("仿射变换矩阵为：\n",m)
-    
 save(m,"matrix.json")

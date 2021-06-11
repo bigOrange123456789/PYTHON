@@ -5,7 +5,7 @@ with open('test.json', 'r') as f:
     a = json.load(f)    #此时a是一个字典对象
 
 b = {
-    'ACME': 45.23
+    'ACME': 145.23
 }
 with open('test2.json', 'w') as f:
     json.dump(b,f)
