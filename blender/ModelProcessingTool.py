@@ -2,12 +2,53 @@ import bpy
 
 class ModelProcessingTool:
     def __init__(self):
-        self.start()
+        self.batch()
+        #self.start()
         print("finished!")
 
     def __getObj():
         return bpy.data.objects;
+    def batch(self):
+        '''
+        self.path="F:\\huayi"
+        self.names=[
+            "2.fbx",
+            "3.fbx"
+            ]
+        '''
+        self.path="E:\\myModel3D\\in"
+        self.names=[
+            "1.fbx",
+            "2.fbx"
+            ]
+        self.processOne(0);
         
+
+    def processOne(self,index):
+        if index>=len(self.names):
+            return;
+        self.delete_all()#删除场景中的全部对象
+        self.load_fbx(self.path,self.names[index])
+        
+        #激活全部对象
+        for i in bpy.data.objects:#激活剩下的对象
+            bpy.context.view_layer.objects.active=i;
+        
+        #文件处理
+        for i in bpy.data.objects:
+            i.rotation_euler.z=0;
+
+        #全选
+        bpy.ops.object.select_all(action='SELECT')#取消选择
+
+        #下载
+        #self.download("E:\\myModel3D\\out","glb")
+        bpy.ops.export_scene.fbx(filepath="E:\\myModel3D\\out"+"\\"+self.names[index])
+
+        #处理下一个
+        self.processOne(index+1);
+
+
     def start(self):
         '''
         #self.delete_all()#删除场景中的全部对象
@@ -89,7 +130,7 @@ class ModelProcessingTool:
                 tpath = path + i.name + "."+type
                 bpy.ops.object.select_pattern(pattern = i.name)#根据模型名字选中模型
                 if type=="fbx":#导出模型
-                    bpy.ops.export_scene.fbx(filepath=tpath, use_selection=True)
+                    bpy.ops.export_scene.fbx(filepath=tpath)
                 if type=="glb":
                     bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
         '''
