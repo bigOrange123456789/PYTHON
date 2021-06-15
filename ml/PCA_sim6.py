@@ -30,18 +30,19 @@ def pca(dataMat, topNfeat):    #topNfeat 降维后的维度
         [0,b,0],
         [0,0,c]
     ]  
+    print(redEigVects.T)
     normalization= meanRemoved * redEigVects
     return redEigVects,meanVals,normalization
 
 def getMatrix(obj1,obj2):
     m1,mean1,normal1 =pca(obj1["arr"],topNfeat=3)#obj0=(obj1-mean)*mat*mat' 
-    print("归一化结果\n",normal1)#降维后的数据#归一化分布，但不归一化次序
+    #print("归一化结果\n",normal1)#降维后的数据#归一化分布，但不归一化次序
     m2,mean2,normal2 =pca(obj2["arr"],topNfeat=3)#obj0=obj2*mat'+mean2
-    print("归一化结果\n",normal2)#降维后的数据#归一化分布，但不归一化次序
+    #print("归一化结果\n",normal2)#降维后的数据#归一化分布，但不归一化次序
     m=m1*m2.I
-    center1=obj1["center"]
-    center2=obj2["center"]
-    y=mean2-dot(mean1,m)+array(center2)-array(center1)
+    #center1=obj1["center"]
+    #center2=obj2["center"]
+    y=mean2-dot(mean1,m);#+array(center2)-array(center1)
     
     m=array(m.tolist()+y.tolist())
     m=array(m.T.tolist()+[[0,0,0,1]]).T
@@ -61,6 +62,7 @@ def save(mat,name):
 
 
 obj1=read("type1.json");#[[0,0,0],[2,0,0],[2,1,0]];
-obj2=read("type1.json");#[[0,10,1],[2,10,1],[2,11,1]];
-m=getMatrix(obj1,obj2)
-save(m,"matrix.json")
+pca(obj1["arr"],3);
+#obj2=read("type1.json");#[[0,10,1],[2,10,1],[2,11,1]];
+#m=getMatrix(obj1,obj2)
+#save(m,"matrix.json")
