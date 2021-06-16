@@ -9,18 +9,10 @@ class ModelProcessingTool:
     def __getObj():
         return bpy.data.objects;
     def batch(self):
-        '''
-        self.path="F:\\huayi"
-        self.names=[
-            "2.fbx",
-            "3.fbx"
-            ]
-        '''
         self.path="E:\\myModel3D\\in"
         self.names=[
-            "1.fbx",
-            "2.fbx"
-            ]
+        "925","722"
+        ]
         self.processOne(0);
         
 
@@ -28,39 +20,26 @@ class ModelProcessingTool:
         if index>=len(self.names):
             return;
         self.delete_all()#删除场景中的全部对象
-        self.load_fbx(self.path,self.names[index])
+        self.load_fbx(self.path,self.names[index]+".fbx")
         
         #激活全部对象
         for i in bpy.data.objects:#激活剩下的对象
             bpy.context.view_layer.objects.active=i;
         
-        #文件处理
+        self.delete_noMesh()#删除非mesh对象
+        self.merge()
+        self.simplification_all(0.5)#输入网格的压缩比
         for i in bpy.data.objects:
-            i.rotation_euler.z=0;
-
-        #全选
-        bpy.ops.object.select_all(action='SELECT')#取消选择
-
-        #下载
-        #self.download("E:\\myModel3D\\out","glb")
-        bpy.ops.export_scene.fbx(filepath="E:\\myModel3D\\out"+"\\"+self.names[index])
+            i.name=self.names[index];
+            
+        self.separate('LOOSE');
+        self.download("E:\\myModel3D\\out\\","obj");
 
         #处理下一个
         self.processOne(index+1);
 
 
     def start(self):
-        '''
-        #self.delete_all()#删除场景中的全部对象
-        #self.load_all("E:\\myModel3D\\2")
-        self.delete_noMesh()#删除非mesh对象
-        self.merge()
-        self.simplification_all(0.5)#输入网格的压缩比
-        self.separate('MATERIAL')
-        self.reName()
-        self.separate('LOOSE')
-        #self.download("E:\\myFile\\test\\test")
-        '''
         self.process()
         
     def process(self):
@@ -133,6 +112,9 @@ class ModelProcessingTool:
                     bpy.ops.export_scene.fbx(filepath=tpath)
                 if type=="glb":
                     bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
+                if type=="obj":
+                    bpy.ops.export_scene.obj(filepath=tpath)
+                
         '''
         bpy.ops.object.select_by_type(extend=False, type='MESH')#只选中MESH
         ls = bpy.context.selected_objects#获取选中的模型
