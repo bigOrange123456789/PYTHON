@@ -1,0 +1,2 @@
+在transform.py通过将文本转换成动作序列。
+在static/js/ResourceLoader.js中加载人物模型（function initModel）、播放口型动画（function animate）。
