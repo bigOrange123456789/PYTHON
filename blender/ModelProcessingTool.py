@@ -8,6 +8,13 @@ class ModelProcessingTool:
 
     def __getObj():
         return bpy.data.objects;
+    def opt(self):
+        bpy.ops.object.select_all(action='SELECT')
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.merge(type='CENTER')
+        bpy.ops.mesh.remove_doubles()
+        bpy.ops.object.mode_set(mode='OBJECT')
+        
     def batch(self):
         self.path="E:\\myModel3D\\in"
         self.names=[
