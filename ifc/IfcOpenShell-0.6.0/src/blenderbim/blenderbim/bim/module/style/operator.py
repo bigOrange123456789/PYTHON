@@ -1,0 +1,71 @@
+import bpy
+import ifcopenshell.api
+from blenderbim.bim.ifc import IfcStore
+
+
+def get_colour_settings(material):
+    transparency = material.diffuse_color[3]
+    diffuse_colour = material.diffuse_color
+    if material.use_nodes and hasattr(material.node_tree, "nodes") and "Principled BSDF" in material.node_tree.nodes:
+        bsdf = material.node_tree.nodes["Principled BSDF"]
+        transparency = bsdf.inputs["Alpha"].default_value
+        diffuse_colour = bsdf.inputs["Base Color"].default_value
+    transparency = 1 - transparency
+    return {
+        "surface_colour": tuple(material.diffuse_color),
+        "transparency": transparency,
+        "diffuse_colour": tuple(diffuse_colour),
+    }
+
+
+class EditStyle(bpy.types.Operator):
+    bl_idname = "bim.edit_style"
+    bl_label = "Edit Style"
+    bl_options = {"REGISTER", "UNDO"}
+    material: bpy.props.StringProperty()
+
+    def execute(self, context):
+        return IfcStore.execute_ifc_operator(self, context)
+
+    def _execute(self, context):
+        self.file = IfcStore.get_file()
+        material = bpy.data.objects.get(self.material) if self.material else bpy.context.active_object.active_material
+        settings = get_colour_settings(material)
+        settings["style"] = self.file.by_id(material.BIMMaterialProperties.ifc_style_id)
+        ifcopenshell.api.run("style.edit_style", self.file, **settings)
+        return {"FINISHED"}
+
+
+class AddStyle(bpy.types.Operator):
+    bl_idname = "bim.add_style"
+    bl_label = "Add Style"
+    bl_options = {"REGISTER", "UNDO"}
+    material: bpy.props.StringProperty()
+
+    def execute(self, context):
+        return IfcStore.execute_ifc_operator(self, context)
+
+    def _execute(self, context):
+        self.file = IfcStore.get_file()
+        material = bpy.data.materials.get(self.material) if self.material else bpy.context.active_object.active_material
+        settings = get_colour_settings(material)
+        settings["name"] = material.name
+        settings["external_definition"] = None # TODO: Implement. See #1222
+        style = ifcopenshell.api.run("style.add_style", self.file, **settings)
+        material.BIMMaterialProperties.ifc_style_id = int(style.id())
+        return {"FINISHED"}
+
+
+class UnlinkStyle(bpy.types.Operator):
+    bl_idname = "bim.unlink_style"
+    bl_label = "Unlink Style"
+    bl_options = {"REGISTER", "UNDO"}
+    material: bpy.props.StringProperty()
+
+    def execute(self, context):
+        self.file = IfcStore.get_file()
+        material = bpy.data.materials.get(self.material)
+        material.BIMMaterialProperties.ifc_style_id = 0
+        if "Ifc" in material.name and "/" in material.name:
+            material.name = "/".join(material.name.split("/")[1:])
+        return {"FINISHED"}

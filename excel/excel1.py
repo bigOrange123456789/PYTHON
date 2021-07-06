@@ -34,7 +34,5 @@ for k in range(0,nrows):
             if cell_value:
                 if cell_value==id:
                     sheet.write(k,5,sh2.cell_value(i,j+4))
-    
-        
 
 workbook.save(excelpath) #保存
