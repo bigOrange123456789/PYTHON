@@ -20,17 +20,17 @@ import numbers
 
 import matplotlib.pyplot as plt
 
-train_df = pd.read_csv('../input/train.csv')#获取训练数据
+train_df = pd.read_csv('../input/train.csv')
 
-n_train = len(train_df)#训练数据中图片的个数
-n_pixels = len(train_df.columns) - 1#获取每张图片的像素个数
-n_class = len(set(train_df['label']))#获取标签类别总数
+n_train = len(train_df)
+n_pixels = len(train_df.columns) - 1
+n_class = len(set(train_df['label']))
 
 print('Number of training samples: {0}'.format(n_train))
 print('Number of training pixels: {0}'.format(n_pixels))
 print('Number of classes: {0}'.format(n_class))
 
-test_df = pd.read_csv('../input/test.csv')#
+test_df = pd.read_csv('../input/test.csv')
 
 n_test = len(test_df)
 n_pixels = len(test_df.columns)
@@ -45,8 +45,6 @@ grid = make_grid(torch.Tensor((train_df.iloc[random_sel, 1:].values/255.).reshap
 plt.rcParams['figure.figsize'] = (16, 2)
 plt.imshow(grid.numpy().transpose((1,2,0)))
 plt.axis('off')
-
-'''
 print(*list(train_df.iloc[random_sel, 0].values), sep = ', ')
 
 class MNIST_data(Dataset):
@@ -366,4 +364,3 @@ out_df = pd.DataFrame(np.c_[np.arange(1, len(test_dataset)+1)[:,None], test_pred
                       columns=['ImageId', 'Label'])
 out_df.head()
 out_df.to_csv('submission.csv', index=False)
-'''
