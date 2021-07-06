@@ -26,13 +26,14 @@ def pca(dataMat, topNfeat=9999999):    #topNfeat 降维后的维度
     print ("对原始数据重构\n",reconMat)#(obj1-mean)*mat*mat'+mean #相对位置不变，重构结果相同
     return redEigVects
 
-#obj1=[[1,1,0],[2,2,0],[0,0,0],[3,3,0]];
-#obj2=[[-1,-1,0],[-2,-2,0],[0,0,0],[-3,-3,0]];
+'''
 obj1=[[0,0,0],[1,0,0],[2,0,0]];
 obj2=[[0,0,0],[0,1,0],[0,2,0]];
 pca(obj1,3)
 pca(obj2,3)
-#result=pca([[1,1,0],[2,2,0],[0,0,0],[3,3,0]],topNfeat=3)
-#print("主成分\n",result)
+'''
 
-
+covMat = cov([[1,1],[0,0],[-1,-1]], rowvar=0) 
+eigVals,eigVects = linalg.eig(mat(covMat)) 
+print(eigVals)
+print(eigVects)
