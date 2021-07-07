@@ -27,14 +27,21 @@ import ifcopenshell.geom
 import ifcopenshell.guid
 
 #f = ifcopenshell.open("input/acad2010_walls.ifc")
-f = ifcopenshell.open("../../test.ifc")
+f = ifcopenshell.open("test.ifc")
 
 # Some operations on ifcopenshell.file
-assert f[1].is_a("IfcCartesianPoint")
-assert f[1].is_a("IfcRepresentationItem")
-assert f[1].is_a() == "IfcCartesianPoint"
-assert f.by_id(1).is_a("IfcCartesianPoint")
-assert f["28pa2ppDf1IA$BaQrvAf48"].is_a("IfcProject")
+print(f.by_type('IfcProduct')[1].is_a())
+assert f.by_type('IfcProduct')[1].is_a("IfcBuildingStorey")
+assert f.by_type('IfcProduct')[1].is_a("IfcProduct")
+assert f.by_type('IfcProduct')[1].is_a() == "IfcBuildingStorey"
+print(dir(f.by_type('IfcProduct')[1]))
+print(f.by_type('IfcProduct')[1].GlobalId)
+print(f.by_type('IfcProduct')[1].id)
+print(f.by_id(122).id)
+print(f.by_id(122).is_a())
+assert f.by_id(122).is_a("IfcBuildingStorey")
+print(f.by_type('IfcProduct')[1].GlobalId)
+assert f["2ro8XT1BzD$eR28WmVEmGU"].is_a("IfcBuildingStorey")
 assert f.by_guid("28pa2ppDf1IA$BaQrvAf48").is_a("IfcProject")
 assert f.createIfcCartesianPoint((0., 0., 0.)).is_a("IfcCartesianPoint")
 assert f.by_type("IfcProject")[0].is_a("IfcProject")

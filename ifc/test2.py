@@ -1,10 +1,19 @@
 import ifcopenshell
+#https://blog.csdn.net/weixin_39904587/article/details/112573503
 
-f = ifcopenshell.open("test.ifc")
-print(f)
-# Accessing entity instances by type:
-print(f.by_type("ifcwall")[:2])
+file = ifcopenshell.open("test.ifc")
 
+def GetIfcClass(ifc_file):#获取文件中所有构件的种类信息
+    products = ifc_file.by_type('IfcProduct')
+    classList = []
+    for product in products:
+        type=product.is_a()
+        flag=True;
+        for t in classList:
+            if type==t:
+                flag=False;
+        if flag:
+            classList.append(product.is_a())
+    return classList
 
-#f.by_type("ifcwall")[:2]
-#[#91=IfcWallStandardCase('2O2Fr$t4X7Zf8NOew3FL9r',#1,'Basic Wall:Interior - Partition (92mm Stud):144586',$,'Basic Wall:Interior - Partition (92mm Stud):128360',#5198,#18806,'144586'), #92=IfcWallStandardCase('2O2Fr$t4X7Zf8NOew3FLIE',#1,'Basic Wall:Interior - Partition (92mm Stud):143921',$,'Basic Wall:Interior - Partition (92mm Stud):128360',#5206,#18805,'143921')]
+print(GetIfcClass(file))
