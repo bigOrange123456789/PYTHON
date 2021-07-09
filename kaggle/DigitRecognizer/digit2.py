@@ -213,7 +213,6 @@ for i, tsfrm in enumerate([rotate, shift, composed]):
 
 plt.show()
 
-
 class Net(nn.Module):    
     def __init__(self):
         super(Net, self).__init__()

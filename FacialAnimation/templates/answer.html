@@ -34,7 +34,8 @@
         });
     });
 
-    const reply = localStorage.getItem("result");
+    const reply = localStorage.getItem("result");//本地存储
+    console.log(reply)
     document.getElementById("result").innerHTML = "文本："+ reply;
 
     var myMain = new Main();

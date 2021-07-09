@@ -17,12 +17,14 @@
                     dataType: 'JSON',
                     type: 'GET',
                     success: function(data){
+                        console.log(data);
                         localStorage.setItem("result", data.result.text);
                         localStorage.setItem("order", JSON.stringify(data.result.order));
                         localStorage.setItem("time", JSON.stringify(data.result.time));
                         location.replace("http://127.0.0.1:5000/answer.html");
                     },
                     error: function (data, status, e){
+                        console.log(data);
                         alert("请等待音频播放结束。");
                     }
                 });

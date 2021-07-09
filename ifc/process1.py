@@ -33,7 +33,34 @@ class IFC_File:
             if tag==name:
                 return value;
       return None;
+   @staticmethod
+   def traverse(product,tag,f,path):
+       import types
+       print(path)
+       if hasattr(product,"__dict__") :
+          for name,value in vars(product).items():
+            if name==tag:
+                f(value)
+            elif not isinstance(value, types.FunctionType):
+                IFC_File.traverse(value,tag,f,path+"."+name)
+   @staticmethod
+   def deleteFile(url):
+       import os
+       os.unlink(url)
 ifc= IFC_File("test.ifc")
+arr=ifc.file.by_type('IfcProduct')
+for i in arr:
+    if ifc.att(i,"Addresses"):
+        print(i.RelatingElement)
+        
+def f(node):
+    print(node)
+IFC_File.traverse(ifc,"schema",f,"ifc")
+print(ifc.file.by_type("IfcApplication"))
+print(ifc.file.wrapped_data)
+ifc.deleteFile("test.txt")
+
+'''
 print(ifc.getClassName())
 
 print(dir(ifc.file))
@@ -41,4 +68,6 @@ print(len(ifc.file.by_type('IfcProduct')))
 while len(ifc.file.by_type('IfcProduct'))>200:
     ifc.remove(ifc.file.by_type('IfcProduct')[0])
 ifc.save()
+'''
+
 
