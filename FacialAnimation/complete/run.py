@@ -10,18 +10,14 @@ app = Flask(__name__)
 def question_page():
     return render_template('question.html')
 
-
-@app.route('/answer.html')
-def answer_page():
-    return render_template('answer.html')
-
-
 @app.route('/answer')
 def answer():
+    #文本-音频
+    #文本-拼音-发音-动作序列-音频时长
     text = request.args.get('text')
-    print("text:\n",text)
+    print("文本text:\n",text)
     text = sentenceCut(text)
-    print("text:\n",text)
+    print("文本text:\n",text)
     # 生成音频
     createVoice([text])
     # 文本转拼音
@@ -35,11 +31,14 @@ def answer():
     print("动作序列order_list:\n",order_list)
     # 获取音频时长
     time_list = TimeList(len(order_list))
-    print("音频时长order_list:\n",order_list)
+    print("音频时长time_list:\n",order_list)
     
-    context = {'text': text, 'order': order_list, 'time': time_list}
+    context = {'text': text, 'order': order_list, 'time': time_list}#文本、动作序列、音频时长
     return jsonify(result=context)
 
+@app.route('/answer.html')
+def answer_page():
+    return render_template('answer.html')
 
 @app.route('/play')
 def play():
