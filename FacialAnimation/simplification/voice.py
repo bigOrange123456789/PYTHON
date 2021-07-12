@@ -45,6 +45,40 @@ class DemoError(Exception):
 TOKEN_URL = 'http://openapi.baidu.com/oauth/2.0/token'
 SCOPE = 'audio_tts_post'  # 有此scope表示有tts能力，没有请在网页里勾选
 
+"""  TOKEN end """
+# 1.生成音频
+def createVoice(text):
+    num = len(text)
+    time_list = []
+    for i in range(0, num):
+        token = fetch_token()
+        tex = quote_plus(text[i])  # 此处TEXT需要两次urlencode
+        # print(tex)
+        params = {'tok': token, 'tex': tex, 'per': PER, 'spd': SPD, 'pit': PIT, 'vol': VOL, 'aue': AUE, 'cuid': CUID,
+                  'lan': 'zh', 'ctp': 1}  # lan ctp 固定参数
+        data = urlencode(params)
+        req = Request(TTS_URL, data.encode('utf-8'))
+        has_error = False
+        try:
+            f = urlopen(req)
+            result_str = f.read()
+            headers = dict((name.lower(), value) for name, value in f.headers.items())
+            has_error = ('content-type' not in headers.keys() or headers['content-type'].find('audio/') < 0)
+        except URLError as err:
+            print('asr http response http code : ' + str(err.code))
+            result_str = err.read()
+            has_error = True
+        #设置文件存储路径
+        save_file = "error.txt" if has_error else 'test' + str(i) + '.' + FORMAT
+        print(save_file)
+        with open(save_file, 'wb') as of:
+            of.write(result_str)
+        if has_error:
+            if IS_PY3:
+                result_str = str(result_str, 'utf-8')
+            # print("tts api  error:" + result_str)
+        # print("result saved as :" + save_file)
+    
 
 def fetch_token():
     # print("fetch token begin")
@@ -76,76 +110,8 @@ def fetch_token():
         raise DemoError('MAYBE API_KEY or SECRET_KEY not correct: access_token or scope not found in token response')
 
 
-"""  TOKEN end """
-
-
-def createVoice(text):
-    num = len(text)
-    time_list = []
-    # print(num)
-    for i in range(0, num):
-        token = fetch_token()
-        tex = quote_plus(text[i])  # 此处TEXT需要两次urlencode
-        # print(tex)
-        params = {'tok': token, 'tex': tex, 'per': PER, 'spd': SPD, 'pit': PIT, 'vol': VOL, 'aue': AUE, 'cuid': CUID,
-                  'lan': 'zh', 'ctp': 1}  # lan ctp 固定参数
-
-        data = urlencode(params)
-        # print('test on Web Browser' + TTS_URL + '?' + data)
-
-        req = Request(TTS_URL, data.encode('utf-8'))
-        has_error = False
-        try:
-            f = urlopen(req)
-            result_str = f.read()
-
-            headers = dict((name.lower(), value) for name, value in f.headers.items())
-
-            has_error = ('content-type' not in headers.keys() or headers['content-type'].find('audio/') < 0)
-        except URLError as err:
-            print('asr http response http code : ' + str(err.code))
-            result_str = err.read()
-            has_error = True
-
-        save_file = "error.txt" if has_error else 'static/voice/result' + str(i) + '.' + FORMAT
-        print(save_file)
-        with open(save_file, 'wb') as of:
-            of.write(result_str)
-
-        if has_error:
-            if IS_PY3:
-                result_str = str(result_str, 'utf-8')
-            # print("tts api  error:" + result_str)
-
-        # print("result saved as :" + save_file)
-        time = getVoiveTime(i)
-        time_list.append(time)
-    # print(time_list)
-    return time_list
-
-
-def getVoiveTime(i):
-    filepath = './static/voice/result' + str(i) + '.mp3'
-    audio = MP3(filepath)
+# 2.获取音频时长
+def TimeList():
+    audio = MP3('./test0.mp3')
     length = audio.info.length * 1000
-    return int(length)
-
-
-def playVoice(i):
-    filepath = './static/voice/result' + str(i) + '.mp3'
-    playsound(filepath)
-
-
-def TimeList(num):
-    time_list = []
-    for i in range(0, num):
-        t = getVoiveTime(i)
-        time_list.append(t)
-    return time_list
-
-
-def playAll(num):
-    n = int(num)
-    for i in range(0, n):
-        playVoice(i)
-        time.sleep(0.5)
+    return [length]

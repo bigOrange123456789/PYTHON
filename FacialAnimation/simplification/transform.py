@@ -1,27 +1,21 @@
-import pypinyin
 #通过将文本转换成动作序列
-
-def sentenceCut(sentence):
-    loc = sentence.find('。', 100)
-    if loc == -1:
-        return sentence
-    else:
-        sent = sentence[0:loc]
-        sent += '。'
-        return sent
-
-
+import pypinyin
+#1.文本转拼音
+#实现方法：调用接口
 def transToPinyin(sentences):
     s = ""
+    #pypinyin.pinyin
+    #输入：一段文字
+    #输出：一组拼音
+    print(pypinyin.pinyin(sentences, style=pypinyin.NORMAL))
     for index, value in enumerate(pypinyin.pinyin(sentences, style=pypinyin.NORMAL)):
-        s += "".join(value)
-        s += " "
-    s = s[:-1]
+        s += "".join(value)#音前有点
+        s += " "#音间空格
+    s = s[:-1]#去除最后一个空格
     return [s]
 
-
+# 2.拼音转基本发音
 def transToMove(pinyin_list):
-    # print("拼音：", pinyin_list)
     move_list = []
     for pinyin in pinyin_list:
         p_list = pinyin.split(" ")
@@ -36,9 +30,7 @@ def transToMove(pinyin_list):
     # print("动作：", move_list)
     return move_list
 
-
-def PtoM(pinyin):
-    # print("拼音：", pinyin)
+def PtoM(pinyin):#拼音到动作序列
     move = ""
     rest = ""
     if pinyin[0] == 'b' or pinyin[0] == 'p' or pinyin[0] == 'm' or pinyin[0] == 'f':
@@ -69,11 +61,9 @@ def PtoM(pinyin):
     elif rest == "e" or rest == "i" or rest == "ie" or rest == "er" or rest == "ei" or rest == "uei" or rest == "en" or rest == "in" or rest == "uen" or rest == "eng" or rest == "ing" or rest == "ueng" or rest == "ue":
         move += "e"
 
-    # print("动作：", move)
     return move
 
-
-def MtoO(p):
+def MtoO(p):#动作序列到动画序号
     if p == 'b':
         return 0
     elif p == 'd':
@@ -84,8 +74,8 @@ def MtoO(p):
         return 3
     elif p == 'u':
         return 4
-
-
+    
+# 3.生成动作序列
 def moveHandle(move_list):
     order_list = []
     for move in move_list:

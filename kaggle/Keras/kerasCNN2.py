@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import seaborn as sns
 
-np.random.seed(2)
-
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import itertools
@@ -17,16 +15,11 @@ from keras.optimizers import RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ReduceLROnPlateau
 
-
 sns.set(style='white', context='notebook', palette='deep')
-
-
 
 # Load the data
 train = pd.read_csv("../input/train.csv")
 test = pd.read_csv("../input/test.csv")
-
-
 
 Y_train = train["label"]
 
@@ -49,8 +42,6 @@ test.isnull().any().describe()
 X_train = X_train / 255.0
 test = test / 255.0
 
-
-
 # Reshape image in 3 dimensions (height = 28px, width = 28px , canal = 1)
 X_train = X_train.values.reshape(-1,28,28,1)
 test = test.values.reshape(-1,28,28,1)
@@ -64,11 +55,6 @@ random_seed = 2
 # Split the train and the validation set for the fitting
 X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size = 0.1, random_state=random_seed)
 
-
-# Some examples
-g = plt.imshow(X_train[0][:,:,0])
-
-'''
 #1.定义
 #1.1定义模型
 # Set the CNN model 设置CNN模型
@@ -133,43 +119,6 @@ history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_siz
                               verbose = 2, steps_per_epoch=X_train.shape[0] // batch_size
                               , callbacks=[learning_rate_reduction])
 
-# Plot the loss and accuracy curves for training and validation 
-fig, ax = plt.subplots(2,1)
-ax[0].plot(history.history['loss'], color='b', label="Training loss")
-ax[0].plot(history.history['val_loss'], color='r', label="validation loss",axes =ax[0])
-legend = ax[0].legend(loc='best', shadow=True)
-
-
-# Look at confusion matrix 
-
-def plot_confusion_matrix(cm, classes,
-                          normalize=False,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
-    """
-    This function prints and plots the confusion matrix.
-    Normalization can be applied by setting `normalize=True`.
-    """
-    plt.imshow(cm, interpolation='nearest', cmap=cmap)
-    plt.title(title)
-    plt.colorbar()
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
-
-    if normalize:
-        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-
-    thresh = cm.max() / 2.
-    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, cm[i, j],
-                 horizontalalignment="center",
-                 color="white" if cm[i, j] > thresh else "black")
-
-    plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-
 # Predict the values from the validation dataset
 Y_pred = model.predict(X_val)
 # Convert predictions classes to one hot vectors 
@@ -177,9 +126,7 @@ Y_pred_classes = np.argmax(Y_pred,axis = 1)
 # Convert validation observations to one hot vectors
 Y_true = np.argmax(Y_val,axis = 1) 
 # compute the confusion matrix
-confusion_mtx = confusion_matrix(Y_true, Y_pred_classes) 
-# plot the confusion matrix
-plot_confusion_matrix(confusion_mtx, classes = range(10)) 
+
 
 # Display some error results 
 
@@ -204,10 +151,10 @@ def display_errors(errors_index,img_errors,pred_errors, obs_errors):
             ax[row,col].set_title("Predicted label :{}\nTrue label :{}".format(pred_errors[error],obs_errors[error]))
             n += 1
 
-# Probabilities of the wrong predicted numbers
+# Probabilities of the wrong predicted numbers 错误预测数的概率
 Y_pred_errors_prob = np.max(Y_pred_errors,axis = 1)
 
-# Predicted probabilities of the true values in the error set
+# Predicted probabilities of the true values in the error set 误差集中真值的预测概率
 true_prob_errors = np.diagonal(np.take(Y_pred_errors, Y_true_errors, axis=1))
 
 # Difference between the probability of the predicted label and the true label
@@ -231,7 +178,4 @@ results = np.argmax(results,axis = 1)
 results = pd.Series(results,name="Label")
 
 submission = pd.concat([pd.Series(range(1,28001),name = "ImageId"),results],axis = 1)
-
 submission.to_csv("cnn_mnist_datagen.csv",index=False)
-
-'''
