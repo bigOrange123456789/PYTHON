@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import seaborn as sns
 
-np.random.seed(2)
-
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 import itertools
@@ -17,6 +15,7 @@ from keras.optimizers import RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ReduceLROnPlateau
 
+np.random.seed(2)
 sns.set(style='white', context='notebook', palette='deep')
 
 # Load the data
@@ -30,18 +29,13 @@ X_train = train.drop(labels = ["label"],axis = 1)
 # free some space
 del train 
 
-
 Y_train.value_counts()
-
-
 
 # Normalize the data
 X_train = X_train / 255.0
 
-
 # Reshape image in 3 dimensions (height = 28px, width = 28px , canal = 1)
 X_train = X_train.values.reshape(-1,28,28,1)
-
 
 # Encode labels to one hot vectors (ex : 2 -> [0,0,1,0,0,0,0,0,0,0])
 Y_train = to_categorical(Y_train, num_classes = 10)
