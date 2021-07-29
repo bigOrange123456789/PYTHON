@@ -119,7 +119,6 @@ class ModelProcessingTool:
                     bpy.ops.export_scene.fbx(filepath=tpath)
                 if type=="glb":
                     bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
-<<<<<<< Updated upstream
                 if type=="obj":
                     bpy.ops.export_scene.obj(filepath=tpath)
                 
@@ -135,14 +134,11 @@ class ModelProcessingTool:
             if type=="glb":
                 bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
         '''
-            
-        
-=======
-                if type=="ply":
-                    bpy.ops.export_mesh.ply(filepath=tpath)
-                    #bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
+        if type=="ply":
+            bpy.ops.export_mesh.ply(filepath=tpath)
+            #bpy.ops.export_scene.gltf(filepath=tpath, use_selection=True)
           
->>>>>>> Stashed changes
+
     def load_fbx(self,path,filename):
         bpy.ops.import_scene.fbx(filepath=(path+"\\"+filename), directory=path,filter_glob=("*.fbx"))
         
