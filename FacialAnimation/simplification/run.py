@@ -2,7 +2,7 @@ from transform import transToPinyin, transToMove, moveHandle#文本到拼音、�
 from voice import createVoice, TimeList # 生成音频、获取音频时长
 if __name__ == "__main__":
     #输入
-    text = "在吗"
+    text = "欢迎大家参加拆哪非啊大会"
     print("文本text:\n",text)
     
     #文本到动画
