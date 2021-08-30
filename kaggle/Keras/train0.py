@@ -110,7 +110,7 @@ history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_siz
                               verbose = 2, steps_per_epoch=X_train.shape[0] // batch_size
                               , callbacks=[learning_rate_reduction])
 
-#model.save( filepath="modelResult.h5", overwrite=True, include_optimizer=True )
+model.save( filepath="modelResult.h5", overwrite=True, include_optimizer=True )
 #filepath：保存的路径
 #overwrite：如果存在源文件，是否覆盖
 #include_optimizer：是否保存优化器状态

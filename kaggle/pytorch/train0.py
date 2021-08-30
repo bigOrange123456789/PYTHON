@@ -230,7 +230,6 @@ def train(epoch):
                 100. * (batch_idx + 1) / len(train_loader),
                 loss.data
                 ))
-
 #2.2 评价
 def evaluate(data_loader):
     model.eval()
@@ -260,6 +259,7 @@ n_epochs = 1
 for epoch in range(n_epochs):
     train(epoch)
     evaluate(train_loader)
+torch.save(model.state_dict(), "modelResult.pkl")
 
 #3.检验
 def prediciton(data_loader):
