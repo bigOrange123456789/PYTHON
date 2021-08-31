@@ -14,7 +14,7 @@ x_train = x_train.astype('float32') / 255.
 x_train = x_train.reshape((len(x_train), np.prod(x_train.shape[1:])))
 
 data_dim=wh*wh
-encoding_dim = wh*5  #编码维度 # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
+encoding_dim = wh*25  #编码维度 # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
 
 input_img = keras.Input(shape=(data_dim,))#This is our input image#解码模型
 encoded_input = keras.Input(shape=(encoding_dim,))# This is our encoded (32-dimensional) input
@@ -30,10 +30,9 @@ rgb=decoded_imgs.reshape(3,wh, wh)
 result=255.*rgb.transpose((1,2,0))#getImg(rgb,wh,wh)
 cv2.imwrite('test2.jpg',result)
 '''
-
 #图片效果展示 # Use Matplotlib (don't ask)
 import matplotlib.pyplot as plt
-n = 3  # How many digits we will display
+n = 8  # How many digits we will display
 plt.figure(figsize=(20, 4))
 for i in range(n):# Display original
     ax = plt.subplot(2, n, i + 1)

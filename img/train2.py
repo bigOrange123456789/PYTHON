@@ -9,7 +9,7 @@ wh=npzfile['wh']#int(npzfile['wh']/npzfile['partion'])
 print(wh)
 
 data_dim=wh*wh
-encoding_dim = wh*5  #编码维度 # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
+encoding_dim = wh*25  #编码维度 # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
 print(wh)
 input_img = keras.Input(shape=(data_dim,))#This is our input image
 
@@ -21,7 +21,7 @@ autoencoder = keras.Model(input_img, decoded)# This model maps an input to its r
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy')#每像素二元交叉熵损失和 Adam 优化器
 print(x_train.shape)
 autoencoder.fit(x_train, x_train,#拟合
-                epochs=50,#将数据使用多少遍
+                epochs=60,#将数据使用多少遍
                 batch_size=1,#将7500个数据分成多少份
                 shuffle=True,
                 validation_data=(x_train, x_train))

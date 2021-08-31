@@ -13,6 +13,38 @@ def divide(img,K):  #每一块的大小
       row += 1
   return vec
 
+wh0=100
+wh=50
+import os
+dir_path='../../img'
+names=os.listdir(dir_path)
+data=np.ones(  (len(names)*3*int(wh0/wh)*int(wh0/wh),wh*wh)  )
+print(  len(names)*3*int(wh0/wh)*int(wh0/wh),wh*wh  )
+index=0
+for file in names:
+    filepath=os.path.join(dir_path,file)
+    print(filepath)
+    image = cv2.imread(filepath)
+    image= cv2.resize(image,dsize=(wh0,wh0))
+
+    r=image[:,:,0]
+    g=image[:,:,1]
+    b=image[:,:,2]
+
+    r2=divide(r,wh)
+    g2=divide(g,wh)
+    b2=divide(b,wh)
+
+    for i in range(r2.shape[0]):
+        data[index+3*i  ,:]=r2[i,:]
+        data[index+3*i+1,:]=g2[i,:]
+        data[index+3*i+2,:]=b2[i,:]
+    index=index+3*int(wh0/wh)*int(wh0/wh)
+print(data.shape)
+x_train = data.astype('float32') / 255.
+np.savez('x_train',x_train=x_train,wh=wh,l=image.shape[0]/wh)
+
+'''
 image = cv2.imread('test.jpg')
 image= cv2.resize(image,dsize=(image.shape[0],image.shape[0]))
 
@@ -39,5 +71,4 @@ np.savez('x_train',x_train=x_train,wh=wh,l=image.shape[0]/wh)
 print("x_train.shape",x_train.shape)
 print("wh",wh)
 print("l",image.shape[0]/wh)
-
-
+'''

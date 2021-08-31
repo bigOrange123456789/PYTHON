@@ -1,28 +1,9 @@
-#开始数据准备
-'''
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from keras.utils.np_utils import to_categorical # convert to one-hot-encoding
-#.set(style='white', context='notebook', palette='deep')
-
-# Load the data
-train = pd.read_csv("train.csv")
-train=train.drop(index=range(37000+4999))
-
-Y_train = train["label"]
-X_train = train.drop(labels = ["label"],axis = 1)# Drop 'label' column
-
-x_train = (X_train/255.).values.astype('float32') / 255.
-y_train = to_categorical(Y_train, num_classes = 10)# Encode labels to one hot vectors (ex : 2 -> [0,0,1,0,0,0,0,0,0,0])
-'''
-#完成数据准备
-
 #1.使用一个全连接的神经层作为编码器和解码器：
 import keras
 from keras import layers
 encoding_dim = 32 # This is the size of our encoded representations # 32 floats -> compression of factor 24.5, assuming the input is 784 floats
 
+#图片大小28*28
 input_img = keras.Input(shape=(784,))# This is our input image
 encoded = layers.Dense(encoding_dim, activation='relu')(input_img)# "encoded" is the encoded representation of the input
 decoded = layers.Dense(784, activation='sigmoid')(encoded)# "decoded" is the lossy reconstruction of the input
@@ -51,8 +32,8 @@ x_test = x_test.reshape((len(x_test), np.prod(x_test.shape[1:])))
 print(x_train.shape)
 print(x_test.shape)
 autoencoder.fit(x_train, x_train,
-                epochs=50,
-                batch_size=256,
+                epochs=50,#50,
+                batch_size=256,#256,
                 shuffle=True,
                 validation_data=(x_train, x_train))
 
@@ -60,15 +41,26 @@ autoencoder.fit(x_train, x_train,
 encoded_imgs = encoder.predict(x_test)
 decoded_imgs = decoder.predict(encoded_imgs)
 
-# Use Matplotlib (don't ask)
-import matplotlib.pyplot as plt
+import cv2
+image = cv2.imread('test.jpg')
+image= cv2.resize(image,dsize=(28,28))
+r=image[:,:,0]
+g=image[:,:,1]
+b=image[:,:,2]
+r2=r.reshape(1,28*28)
+g2=g.reshape(1,28*28)
+b2=b.reshape(1,28*28)
+import numpy as np
+data=np.array([r2,g2,b2])
+x_train=data.astype('float32') / 255.
 
-n = 10  # How many digits we will display
+#图片效果展示 # Use Matplotlib (don't ask)
+import matplotlib.pyplot as plt
+n = 3  # How many digits we will display
 plt.figure(figsize=(20, 4))
-for i in range(n):
-    # Display original
+for i in range(n):# Display original
     ax = plt.subplot(2, n, i + 1)
-    plt.imshow(x_test[i].reshape(28, 28))
+    plt.imshow(x_train[i].reshape(28, 28))
     plt.gray()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
