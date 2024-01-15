@@ -1,0 +1,6 @@
+# 忽略 
+/DeepLearning_demo/
+/in/
+/out/
+/old/
+/__pycache__/
