@@ -7,10 +7,18 @@ class PatchEncoder(layers.Layer):
     def __init__(self, num_patches, projection_dim):
         super().__init__()
         self.num_patches = num_patches
-        self.projection = layers.Dense(units=projection_dim)
+        self.projection = layers.Dense(units=projection_dim)# 72*72*3->(12*12)*(6*6*3)->(12*12)*64
         self.position_embedding = layers.Embedding(
             input_dim=num_patches, output_dim=projection_dim
         )
+        # input_dim：词汇表的大小，即最大整数索引+1。
+        # output_dim：密集嵌入的尺寸。
+        # print("[PatchEncoder]self.position_embedding",self.position_embedding)
+        # position_embedding <Embedding name=embedding, built=False>
+        # print("[PatchEncoder]num_patches",num_patches)
+        # print("[PatchEncoder]projection_dim",projection_dim)  
+        # num_patches    -- 144
+        # projection_dim -- 64
 
     def call(self, patch):
         positions = ops.expand_dims(

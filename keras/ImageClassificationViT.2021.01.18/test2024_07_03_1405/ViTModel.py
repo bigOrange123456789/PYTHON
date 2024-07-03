@@ -39,9 +39,18 @@ class ViTModel():
         inputs = keras.Input(shape=input_shape)
         # Augment data.
         augmented = data_augmentation(inputs)
+        # print("[initModel]data_augmentation:",data_augmentation)
+        # print("[initModel]augmented:",augmented)
+        # data_augmentation:<Sequential name=data_augmentation, built=True>
+        # augmented : <KerasTensor shape=(None, 72, 72, 3)>
+
         # Create patches.
-        patches = Patches(patch_size)(augmented)
+        patches = Patches(patch_size)(augmented) # patch_size=6 
         # Encode patches.
+        # print("[initModel]num_patches,projection_dim,patches:",num_patches, projection_dim,patches)
+        # num_patches = 144 
+        # projection_dim = 64 
+        # patches = <KerasTensor shape=(None, 144, 108)>  # 72*72*3->(12*12)*(6*6*3)
         encoded_patches = PatchEncoder(num_patches, projection_dim)(patches)
 
         # Create multiple layers of the Transformer block.

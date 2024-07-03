@@ -32,21 +32,30 @@ class Main:
         # Compute the mean and the variance of the training data for normalization.
         data_augmentation.layers[0].adapt(x_train)
 
+        self.displayPatches(x_train,image_size)
+
+        print("\nIV.Compile, train, and evaluate the model")
+        vit=ViTModel(data_augmentation)
+        exit(0)
+        vit.train(x_train,y_train)
+        vit.predict(x_test,y_test)#evaluate
+    
+    def displayPatches(self,x_train,image_size):
         print("\nIII.Let's display patches for a sample image")
         plt.figure(figsize=(4, 4))
-        image = x_train[np.random.choice(range(x_train.shape[0]))]
+        image = x_train[np.random.choice(range(x_train.shape[0]))]#image: (32, 32, 3)<class 'numpy.ndarray'>
         plt.imshow(image.astype("uint8"))
         plt.axis("off")
-
         resized_image = ops.image.resize(
             ops.convert_to_tensor([image]), size=(image_size, image_size)
         )
         patch_size = 6  # Size of the patches to be extract from the input images4
+        print(f"resized_image: {resized_image.shape}{type(resized_image)}")#(1, 72, 72, 3) <class 'tensorflow.python.framework.ops.EagerTensor'>
         patches = Patches(patch_size)(resized_image)
-        print(f"Image size: {image_size} X {image_size}")
-        print(f"Patch size: {patch_size} X {patch_size}")
-        print(f"Patches per image: {patches.shape[1]}")
-        print(f"Elements per patch: {patches.shape[-1]}")
+        print(f"Image size: {image_size} X {image_size}") # Image size: 72 X 72
+        print(f"Patch size: {patch_size} X {patch_size}") # Patch size: 6 X 6
+        print(f"Patches per image: {patches.shape[1]}")   # Patches per image: 144
+        print(f"Elements per patch: {patches.shape[-1]}") # Elements per patch: 108
 
         n = int(np.sqrt(patches.shape[1]))
         plt.figure(figsize=(4, 4))
@@ -56,10 +65,6 @@ class Main:
             plt.imshow(ops.convert_to_numpy(patch_img).astype("uint8"))
             plt.axis("off")
 
-        print("\nIV.Compile, train, and evaluate the model")
-        vit=ViTModel(data_augmentation)
-        # vit.train(x_train,y_train)
-        vit.predict(x_test,y_test)#evaluate
         
 if __name__ == "__main__":#用于测试
     Main()
